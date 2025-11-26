@@ -8,7 +8,7 @@ const Services = () => {
     {
       icon: <Car className="h-12 w-12 text-blue-600" />,
       title: "Exterior Wash",
-      price: "From TZSH 10000",
+      price: "From TZSH 20000",
       description: "Complete exterior cleaning with premium soap and protective wax",
       features: [
         "Pre-wash rinse",
@@ -22,7 +22,7 @@ const Services = () => {
     {
       icon: <Sparkles className="h-12 w-12 text-blue-600" />,
       title: "Interior Cleaning",
-      price: "From TZSH 15000",
+      price: "From TZSH 10000",
       description: "Deep interior cleaning for a fresh and comfortable ride",
       features: [
         "Vacuum all surfaces",
@@ -36,7 +36,7 @@ const Services = () => {
     {
       icon: <Zap className="h-12 w-12 text-blue-600" />,
       title: "Engine Wash",
-      price: "From TZSH 15000",
+      price: "From TZSH 10000",
       description: "Professional engine bay cleaning and degreasing",
       features: [
         "Engine degreasing",
@@ -64,7 +64,7 @@ const Services = () => {
     {
       icon: <Crown className="h-12 w-12 text-blue-600" />,
       title: "VIP Complete Package",
-      price: "From TZSH 100000",
+      price: "From TZSH 99000",
       description: "The ultimate car care experience with all services included",
       features: [
         "Full exterior wash & wax",
