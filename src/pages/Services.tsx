@@ -10,6 +10,96 @@ import {
 } from "lucide-react";
 import PriceCalculator from "../components/PriceCalculator";
 
+// export const services = [
+//   {
+//     icon: <Car className="h-12 w-12 text-blue-600" />,
+//     title: "Exterior Wash",
+//     price: "From TZSH 20000",
+//     description:
+//       "Complete exterior cleaning with premium soap and protective wax",
+//     features: [
+//       "Pre-wash rinse",
+//       "Hand wash with premium soap",
+//       "Wheel and tire cleaning",
+//       "Protective wax application",
+//       "Final rinse and dry",
+//     ],
+//     popular: false,
+//   },
+//   {
+//     icon: <Sparkles className="h-12 w-12 text-blue-600" />,
+//     title: "Interior Cleaning",
+//     price: "From TZSH 10000",
+//     description: "Deep interior cleaning for a fresh and comfortable ride",
+//     features: [
+//       "Vacuum all surfaces",
+//       "Dashboard and console cleaning",
+//       "Seat cleaning and conditioning",
+//       "Window cleaning (interior)",
+//       "Air freshener application",
+//     ],
+//     popular: false,
+//   },
+//   {
+//     icon: <Zap className="h-12 w-12 text-blue-600" />,
+//     title: "Engine Wash",
+//     price: "From TZSH 10000",
+//     description: "Professional engine bay cleaning and degreasing",
+//     features: [
+//       "Engine degreasing",
+//       "Pressure washing",
+//       "Component protection",
+//       "Final inspection",
+//       "Engine bay dressing",
+//     ],
+//     popular: false,
+//   },
+//   {
+//     icon: <Shield className="h-12 w-12 text-blue-600" />,
+//     title: "Waxing & Polishing",
+//     price: "From TZSH 15000",
+//     description: "Premium paint protection and shine enhancement",
+//     features: [
+//       "Paint inspection",
+//       "Clay bar treatment",
+//       "Machine polishing",
+//       "Premium wax application",
+//       "Final buffing",
+//     ],
+//     popular: true,
+//   },
+//   {
+//     icon: <Crown className="h-12 w-12 text-blue-600" />,
+//     title: "VIP Complete Package",
+//     price: "From TZSH 99000",
+//     description: "The ultimate car care experience with all services included",
+//     features: [
+//       "Full exterior wash & wax",
+//       "Complete interior detailing",
+//       "Engine bay cleaning",
+//       "Tire shine & dressing",
+//       "Paint protection",
+//       "Air freshener",
+//       "Quality guarantee",
+//     ],
+//     popular: true,
+//   },
+//   {
+//     icon: <Sparkles className="h-12 w-12 text-blue-600" />,
+//     title: "Express Wash",
+//     price: "From TZSH 5000",
+//     description: "Quick and efficient wash for busy schedules",
+//     features: [
+//       "Exterior rinse",
+//       "Soap application",
+//       "Basic wheel cleaning",
+//       "Quick dry",
+//       "15-minute service",
+//     ],
+//     popular: false,
+//   },
+// ];
+
 export const services = [
   {
     icon: <Car className="h-12 w-12 text-blue-600" />,
