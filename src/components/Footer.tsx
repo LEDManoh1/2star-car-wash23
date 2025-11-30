@@ -1,5 +1,13 @@
-import React from 'react';
-import { Phone, Mail, MapPin, Instagram, Facebook, Clock } from 'lucide-react';
+import React from "react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Facebook,
+  Clock,
+  Settings,
+} from "lucide-react";
 
 const Footer = () => {
   return (
@@ -9,41 +17,50 @@ const Footer = () => {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <img 
-                src="/2star logo.jpg" 
-                alt="2Star Car Wash" 
+              <img
+                src="/2star logo.jpg"
+                alt="2Star Car Wash"
                 className="h-10 w-10 object-contain"
               />
               <span className="text-xl font-bold">2Star Car Wash</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
-              Premium car wash and auto services providing exceptional quality and customer satisfaction. 
-              Your car deserves the best care, and we deliver it with passion and precision.
+              Premium car wash and auto services providing exceptional quality
+              and customer satisfaction. Your car deserves the best care, and we
+              deliver it with passion and precision.
             </p>
             <div className="flex space-x-4">
-              <a 
+              <a
                 href="https://instagram.com/2star_car_wash"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Instagram className="h-6 w-6" />
               </a>
-              <a 
+              <a
                 href="https://facebook.com/2star_car_wash"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Facebook className="h-6 w-6" />
               </a>
-              <a 
-                href="https://wa.me/255713366464" 
-                target="_blank" 
+              <a
+                href="https://wa.me/255713366464"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Phone className="h-6 w-6" />
+              </a>
+              <a
+                href="/admin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                <Settings className="h-6 w-6" />
               </a>
             </div>
           </div>
@@ -81,7 +98,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
             © 2025 2Star Car Wash. All rights reserved. Built with excellence.

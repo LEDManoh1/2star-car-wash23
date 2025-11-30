@@ -1,34 +1,68 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
+import React, { useState } from "react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
+import { DataWrite } from "@/data/write";
+import { toast } from "sonner";
+import { Timestamp } from "firebase/firestore";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
+
     setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
     });
+    toast.loading("Sending...");
+    DataWrite.create("messages", { ...formData, read: false })
+      .then(() => {
+        //send notifications and alert the admin.
+        DataWrite.create("notifications", {
+          subject: `Message From #${formData.name}`,
+          content: formData.message.trim(),
+          target: "admin",
+          seen: [],
+          createdAt: Timestamp.now(),
+          intent: "/messages",
+          externalLink: false,
+        })
+          .then(() => {
+            toast.dismiss();
+            toast.success(
+              "Thank you for your message! We will get back to you soon."
+            );
+          })
+          .catch((e) => {
+            toast.dismiss();
+            toast.error("Something went wrong.", e);
+          });
+      })
+      .catch((e) => {
+        toast.dismiss();
+        toast.error("Couldn't send message try again!", e);
+      });
   };
 
   const contactInfo = [
@@ -36,26 +70,26 @@ const Contact = () => {
       icon: <Phone className="h-6 w-6 text-blue-600" />,
       title: "Phone",
       details: ["+255 713 366 464", "+255 784 333142"],
-      action: "tel:+255713366464"
+      action: "tel:+255713366464",
     },
     {
       icon: <Mail className="h-6 w-6 text-blue-600" />,
       title: "Email",
       details: ["bimoga77@gmail.com", "bookings@2starcarwash.com"],
-      action: "mailto:bimoga77@gmail.com"
+      action: "mailto:bimoga77@gmail.com",
     },
     {
       icon: <MapPin className="h-6 w-6 text-blue-600" />,
       title: "Location",
       details: ["Kigamboni, Tanzania", "We come to you!"],
-      action: "#"
+      action: "#",
     },
     {
       icon: <Clock className="h-6 w-6 text-blue-600" />,
       title: "Working Hours",
       details: ["Mon-Fri: 8AM-6PM", "Sat-Sun: 9AM-5PM"],
-      action: "#"
-    }
+      action: "#",
+    },
   ];
 
   return (
@@ -63,11 +97,9 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Get In Touch
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Get In Touch</h1>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-            Have questions about our services? Need to schedule an appointment? 
+            Have questions about our services? Need to schedule an appointment?
             We're here to help and would love to hear from you.
           </p>
         </div>
@@ -78,7 +110,10 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {contactInfo.map((info, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
                 <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
                   {info.icon}
                 </div>
@@ -136,13 +171,13 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      placeholder="+254 700 000 000"
+                      placeholder=""
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address *
@@ -213,8 +248,12 @@ const Contact = () => {
                 <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
                   <div className="text-center">
                     <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-600">We provide mobile car wash services</p>
-                    <p className="text-gray-600">throughout Dar es salaam and surrounding areas</p>
+                    <p className="text-gray-600">
+                      We provide mobile car wash services
+                    </p>
+                    <p className="text-gray-600">
+                      throughout Dar es salaam and surrounding areas
+                    </p>
                   </div>
                 </div>
               </div>
@@ -232,10 +271,12 @@ const Contact = () => {
                     <Phone className="h-6 w-6 text-green-600" />
                     <div>
                       <p className="font-semibold text-gray-900">Call Now</p>
-                      <p className="text-sm text-gray-600">Speak directly with our team</p>
+                      <p className="text-sm text-gray-600">
+                        Speak directly with our team
+                      </p>
                     </div>
                   </a>
-                  
+
                   <a
                     href="https://wa.me/255713366464"
                     target="_blank"
@@ -245,10 +286,12 @@ const Contact = () => {
                     <MessageCircle className="h-6 w-6 text-green-600" />
                     <div>
                       <p className="font-semibold text-gray-900">WhatsApp</p>
-                      <p className="text-sm text-gray-600">Chat with us instantly</p>
+                      <p className="text-sm text-gray-600">
+                        Chat with us instantly
+                      </p>
                     </div>
                   </a>
-                  
+
                   <a
                     href="mailto:bimoga77@gmail.com"
                     className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
@@ -282,7 +325,7 @@ const Contact = () => {
                       <p className="text-sm text-gray-600">@2star_car_wash</p>
                     </div>
                   </a>
-                  
+
                   <a
                     href="https://facebook.com/2star_car_wash"
                     target="_blank"
@@ -315,41 +358,45 @@ const Contact = () => {
               Quick answers to common questions
             </p>
           </div>
-          
+
           <div className="space-y-6">
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 Do you provide mobile car wash services?
               </h3>
               <p className="text-gray-600">
-                Yes! We come to your location anywhere in Nairobi. Just provide your address when booking.
+                Yes! We come to your location anywhere in Nairobi. Just provide
+                your address when booking.
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 How long does a typical car wash take?
               </h3>
               <p className="text-gray-600">
-                Express wash takes 15-20 minutes, while our complete packages can take 45-90 minutes depending on the service.
+                Express wash takes 15-20 minutes, while our complete packages
+                can take 45-90 minutes depending on the service.
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 What payment methods do you accept?
               </h3>
               <p className="text-gray-600">
-                We accept cash, M-Pesa, and credit/debit cards for your convenience.
+                We accept cash, M-Pesa, and credit/debit cards for your
+                convenience.
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 Do you offer any guarantees?
               </h3>
               <p className="text-gray-600">
-                Yes, we offer a 100% satisfaction guarantee. If you're not happy with our service, we'll make it right.
+                Yes, we offer a 100% satisfaction guarantee. If you're not happy
+                with our service, we'll make it right.
               </p>
             </div>
           </div>

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Clock, CheckCircle, Car, MapPin, Phone } from 'lucide-react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
+import { Search, Clock, CheckCircle, Car, MapPin, Phone } from "lucide-react";
+import { dataListener } from "../data/read";
+import { services } from "@/pages/Services";
 
 interface ServiceStatus {
   id: string;
-  status: 'confirmed' | 'on-way' | 'in-progress' | 'completed';
+  status: "confirmed" | "on-way" | "in-progress" | "completed";
   estimatedTime: string;
   currentStep: string;
   customerName: string;
@@ -12,52 +15,55 @@ interface ServiceStatus {
 }
 
 const ServiceTracker = () => {
-  const [trackingId, setTrackingId] = useState('');
-  const [serviceStatus, setServiceStatus] = useState<ServiceStatus | null>(null);
+  const [trackingId, setTrackingId] = useState("");
+  const [serviceStatus, setServiceStatus] = useState<ServiceStatus | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mock data for demonstration
-  const mockStatuses: { [key: string]: ServiceStatus } = {
-    '2SW-123456': {
-      id: '2SW-123456',
-      status: 'on-way',
-      estimatedTime: '15 minutes',
-      currentStep: 'Our team is on the way to your location',
-      customerName: 'Mwijaku Hassan',
-      service: 'VIP Complete Package',
-      location: 'Kigamboni, Dar es Salaam'
-    },
-    '2SW-789012': {
-      id: '2SW-789012',
-      status: 'in-progress',
-      estimatedTime: '30 minutes',
-      currentStep: 'Currently washing your vehicle',
-      customerName: 'Amina Juma',
-      service: 'Exterior Wash',
-      location: 'Mikocheni, Dar es Salaam'
-    }
-  };
+  // {
+  //     id: "2SW-123456",
+  //     status: "on-way",
+  //     estimatedTime: "15 minutes",
+  //     currentStep: "Our team is on the way to your location",
+  //     customerName: "Mwijaku Hassan",
+  //     service: "VIP Complete Package",
+  //     location: "Kigamboni, Dar es Salaam",
+  //   },
+  //    {
+  //     id: "2SW-789012",
+  //     status: "in-progress",
+  //     estimatedTime: "30 minutes",
+  //     currentStep: "Currently washing your vehicle",
+  //     customerName: "Amina Juma",
+  //     service: "Exterior Wash",
+  //     location: "Mikocheni, Dar es Salaam",
+  //   },
 
   const handleTrack = () => {
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const status = mockStatuses[trackingId];
-      setServiceStatus(status || null);
+    //API call
+    dataListener("bookings", trackingId, "bookings", [], (data) => {
+      //console.log("Booking Found:", data);
+      const status = data as ServiceStatus;
+
+      if (!Array.isArray(status)) {
+        // handle array case if needed
+        setServiceStatus(status);
+      }
       setIsLoading(false);
-    }, 1000);
+    });
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'confirmed':
+      case "confirmed":
         return <Clock className="h-6 w-6 text-blue-600" />;
-      case 'on-way':
+      case "on-way":
         return <Car className="h-6 w-6 text-yellow-600" />;
-      case 'in-progress':
+      case "in-progress":
         return <Clock className="h-6 w-6 text-orange-600" />;
-      case 'completed':
+      case "completed":
         return <CheckCircle className="h-6 w-6 text-green-600" />;
       default:
         return <Clock className="h-6 w-6 text-gray-600" />;
@@ -66,28 +72,28 @@ const ServiceTracker = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed':
-        return 'bg-blue-100 text-blue-800';
-      case 'on-way':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'in-progress':
-        return 'bg-orange-100 text-orange-800';
-      case 'completed':
-        return 'bg-green-100 text-green-800';
+      case "confirmed":
+        return "bg-blue-100 text-blue-800";
+      case "on-way":
+        return "bg-yellow-100 text-yellow-800";
+      case "in-progress":
+        return "bg-orange-100 text-orange-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const statusSteps = [
-    { key: 'confirmed', label: 'Booking Confirmed' },
-    { key: 'on-way', label: 'Team On The Way' },
-    { key: 'in-progress', label: 'Service In Progress' },
-    { key: 'completed', label: 'Service Completed' }
+    { key: "confirmed", label: "Booking Confirmed" },
+    { key: "on-way", label: "Team On The Way" },
+    { key: "in-progress", label: "Service In Progress" },
+    { key: "completed", label: "Service Completed" },
   ];
 
   const getCurrentStepIndex = (status: string) => {
-    return statusSteps.findIndex(step => step.key === status);
+    return statusSteps.findIndex((step) => step.key === status);
   };
 
   return (
@@ -116,34 +122,40 @@ const ServiceTracker = () => {
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors flex items-center space-x-2"
           >
             <Search className="h-5 w-5" />
-            <span>{isLoading ? 'Tracking...' : 'Track'}</span>
+            <span>{isLoading ? "Tracking..." : "Track"}</span>
           </button>
         </div>
-        <p className="text-sm text-gray-600 mt-2">
-          Try: 2SW-123456 or 2SW-789012 for demo
-        </p>
       </div>
 
       {/* Service Status */}
-      {serviceStatus && (
+      {serviceStatus && !isLoading && (
         <div className="space-y-6">
           {/* Status Header */}
           <div className="bg-gray-50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-xl font-semibold text-gray-900">
-                  {serviceStatus.service}
+                  {serviceStatus.service
+                    .split(",")
+                    .map((s) => services.find((fs) => fs.id === s)?.title)
+                    .join(" | ")}
                 </h3>
-                <p className="text-gray-600">for {serviceStatus.customerName}</p>
+                <p className="text-gray-600">
+                  for {serviceStatus.customerName}
+                </p>
               </div>
               <div className="flex items-center space-x-2">
                 {getStatusIcon(serviceStatus.status)}
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(serviceStatus.status)}`}>
-                  {serviceStatus.status.replace('-', ' ').toUpperCase()}
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                    serviceStatus.status
+                  )}`}
+                >
+                  {serviceStatus.status.replace("-", " ").toUpperCase()}
                 </span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-gray-500" />
@@ -151,27 +163,33 @@ const ServiceTracker = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Clock className="h-5 w-5 text-gray-500" />
-                <span className="text-gray-700">ETA: {serviceStatus.estimatedTime}</span>
+                <span className="text-gray-700">
+                  ETA: {serviceStatus.estimatedTime}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Progress Steps */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-gray-900">Service Progress</h4>
+            <h4 className="text-lg font-semibold text-gray-900">
+              Service Progress
+            </h4>
             <div className="space-y-3">
               {statusSteps.map((step, index) => {
                 const currentIndex = getCurrentStepIndex(serviceStatus.status);
                 const isCompleted = index <= currentIndex;
                 const isCurrent = index === currentIndex;
-                
+
                 return (
                   <div key={step.key} className="flex items-center space-x-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      isCompleted 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-200 text-gray-500'
-                    }`}>
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        isCompleted
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
                       {isCompleted ? (
                         <CheckCircle className="h-5 w-5" />
                       ) : (
@@ -179,13 +197,21 @@ const ServiceTracker = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className={`font-medium ${
-                        isCurrent ? 'text-blue-600' : isCompleted ? 'text-gray-900' : 'text-gray-500'
-                      }`}>
+                      <p
+                        className={`font-medium ${
+                          isCurrent
+                            ? "text-blue-600"
+                            : isCompleted
+                            ? "text-gray-900"
+                            : "text-gray-500"
+                        }`}
+                      >
                         {step.label}
                       </p>
                       {isCurrent && (
-                        <p className="text-sm text-gray-600">{serviceStatus.currentStep}</p>
+                        <p className="text-sm text-gray-600">
+                          {serviceStatus.currentStep}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -219,15 +245,15 @@ const ServiceTracker = () => {
       )}
 
       {/* No Results */}
-      {trackingId && !serviceStatus && !isLoading && (
+      {isLoading && trackingId && (
         <div className="text-center py-8">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Search className="h-8 w-8 text-gray-400" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No booking found</h3>
-          <p className="text-gray-600 mb-4">
-            We couldn't find a booking with ID "{trackingId}". Please check your booking ID and try again.
-          </p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Searching ...
+          </h3>
+          <p className="text-gray-600 mb-4">This should just take a moment.</p>
           <p className="text-sm text-gray-500">
             If you need help, please contact us at +255 713 366464
           </p>

@@ -4,6 +4,8 @@ import { X, ChevronLeft, ChevronRight, Camera } from 'lucide-react';
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+  
+
   // Using placeholder images from Pexels for demonstration
   const galleryImages = [
     {
@@ -141,7 +143,7 @@ const Gallery = () => {
                   alt={image.alt}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-opacity-3 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Camera className="h-8 w-8 text-white" />
                   </div>
