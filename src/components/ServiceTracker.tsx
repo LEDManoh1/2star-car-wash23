@@ -137,7 +137,7 @@ const ServiceTracker = () => {
                 <h3 className="text-xl font-semibold text-gray-900">
                   {serviceStatus.service
                     .split(",")
-                    .map((s) => services.find((fs) => fs.id === s)?.title)
+                    .map((s) => services.find((fs: any) => fs.id === s)?.title)
                     .join(" | ")}
                 </h3>
                 <p className="text-gray-600">
