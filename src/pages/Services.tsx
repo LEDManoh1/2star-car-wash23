@@ -177,7 +177,7 @@ export const services = [
   {
     icon: <Sparkles className="h-12 w-12 text-blue-600" />,
     title: "Express Wash",
-    price: "From TZSH 5000",
+    price: "From TZSH 20000",
     description: "Quick and efficient wash for busy schedules",
     features: [
       "Exterior rinse",
